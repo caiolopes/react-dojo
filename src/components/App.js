@@ -1,29 +1,54 @@
 import React, { Component, Fragment } from 'react';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
+import * as api from '../api/todo';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      todos: [{ id: 1, text: 'item 1' }, { id: 2, text: 'item 2' }],
+      todos: [],
     };
 
-    this.handleMarkAsDone = this.handleMarkAsDone.bind(this);
+    this.toggleDone = this.toggleDone.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
     this.handleAddTodo = this.handleAddTodo.bind(this);
   }
 
   handleAddTodo(text) {
-    const { todos } = this.state;
-    todos.push({ id: new Date().getTime(), text });
-    this.setState({ todos });
+    api.addTodo(text).then(todo => {
+      const { todos } = this.state;
+      todos.push(todo);
+      this.setState({ todos });
+    });
   }
 
-  handleMarkAsDone(id) {
-    this.setState((prevState, props) => {
-      return { todos: prevState.todos.filter(item => item.id !== id) };
-    });
+  toggleDone(id) {
+    const { todos } = this.state;
+
+    api.editTodo(todos.find(todo => todo._id === id))
+      .then(editedTodo => {
+        this.setState((prevState, props) => {
+          return {
+            todos: prevState.todos.map(item => {
+              return item._id === editedTodo._id ? editedTodo : item;
+            }),
+          };
+        });
+      });
+  }
+
+  handleRemove(id) {
+    api.removeTodo(id).then(todo => {
+      this.setState((prevState, props) => {
+        return { todos: prevState.todos.filter(item => item._id !== todo._id) };
+      });
+    })
+  }
+
+  componentDidMount() {
+    api.getTodos().then(todos => this.setState({ todos }));
   }
 
   render() {
@@ -34,7 +59,8 @@ class App extends Component {
         <TodoForm onAddTodo={this.handleAddTodo} total={todos.length} />
         <TodoList
           todos={todos}
-          onMarkAsDone={this.handleMarkAsDone}
+          toggleDone={this.toggleDone}
+          onRemove={this.handleRemove}
         />
       </Fragment>
     );

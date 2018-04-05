@@ -3,12 +3,12 @@ import TodoItem from './TodoItem';
 
 class TodoList extends Component {
   render() {
-    const { todos, onMarkAsDone } = this.props;
+    const { todos, toggleDone, onRemove } = this.props;
 
     return (
       <ul>
         {todos.map(item => (
-          <TodoItem key={item.id} item={item} onMarkAsDone={this.props.onMarkAsDone} />
+          <TodoItem key={item._id} item={item} toggleDone={toggleDone} onRemove={onRemove} />
         ))}
       </ul>
     );
