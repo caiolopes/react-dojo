@@ -1,0 +1,236 @@
+{
+	"info": {
+		"name": "Todo App",
+		"_postman_id": "9815963d-5cec-0ec8-38b9-b0bbf4d37131",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "todos",
+			"description": "",
+			"item": [
+				{
+					"name": "GET /todos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-auth",
+								"value": "{{x-auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Something to do\"\n}"
+						},
+						"url": "{{url}}/todos",
+						"description": "List all todos"
+					},
+					"response": []
+				},
+				{
+					"name": "POST /todos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var body = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable('todoId', body._id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-auth",
+								"value": "{{x-auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Something to do\" \n}"
+						},
+						"url": "{{url}}/todos",
+						"description": "Create a new todo and return it"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /todos/:id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{x-auth}}"
+							}
+						],
+						"body": {},
+						"url": "{{url}}/todos/{{todoId}}",
+						"description": "Return a todo given an id"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /todos/:id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{x-auth}}"
+							}
+						],
+						"body": {},
+						"url": "{{url}}/todos/{{todoId}}",
+						"description": "Delete a todo by id"
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH /todos/:id",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-auth",
+								"value": "{{x-auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Updated todo\",\n  \"completed\": true\n}"
+						},
+						"url": "{{url}}/todos/{{todoId}}",
+						"description": "Update a todo"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"description": "",
+			"item": [
+				{
+					"name": "POST /users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var token = postman.getResponseHeader('x-auth');",
+									"postman.setEnvironmentVariable(\"x-auth\", token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"caio@example.com\",\n  \"password\": \"password!\"\n}"
+						},
+						"url": "{{url}}/users",
+						"description": "Create a new user"
+					},
+					"response": []
+				},
+				{
+					"name": "POST /users/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var token = postman.getResponseHeader('x-auth');",
+									"postman.setEnvironmentVariable(\"x-auth\", token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"caio@example.com\",\n  \"password\": \"password!\"\n}"
+						},
+						"url": "{{url}}/users/login",
+						"description": "Sign in a user"
+					},
+					"response": []
+				},
+				{
+					"name": "GET /users/me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth",
+								"value": "{{token}}"
+							}
+						],
+						"body": {},
+						"url": "{{url}}/users/me",
+						"description": "Get user information"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE /users/logout",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "x-auth",
+								"value": "{{x-auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{url}}/users/logout",
+						"description": "Sign out a user"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
