@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import update from 'immutability-helper'
 import CssBaseline from 'material-ui/CssBaseline';
 import Grid from 'material-ui/Grid';
 
@@ -50,6 +51,19 @@ class App extends Component {
     })
   }
 
+  moveCard = (dragIndex, hoverIndex) => {
+		const { todos } = this.state
+		const dragCard = todos[dragIndex]
+
+		this.setState(
+			update(this.state, {
+				todos: {
+					$splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]],
+				},
+			}),
+		)
+	}
+
   componentDidMount() {
     api.getTodos().then(todos => this.setState({ todos }));
   }
@@ -64,6 +78,7 @@ class App extends Component {
           <Grid item md={6} lg={4}>
             <TodoForm onAddTodo={this.handleAddTodo} total={todos.length} />
             <TodoList
+              moveCard={this.moveCard}
               todos={todos}
               toggleDone={this.toggleDone}
               onRemove={this.handleRemove}
