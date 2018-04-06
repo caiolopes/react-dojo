@@ -1,4 +1,7 @@
 import React, { Component, Fragment } from 'react';
+import CssBaseline from 'material-ui/CssBaseline';
+import Grid from 'material-ui/Grid';
+
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 import * as api from '../api/todo';
@@ -56,12 +59,17 @@ class App extends Component {
 
     return (
       <Fragment>
-        <TodoForm onAddTodo={this.handleAddTodo} total={todos.length} />
-        <TodoList
-          todos={todos}
-          toggleDone={this.toggleDone}
-          onRemove={this.handleRemove}
-        />
+        <CssBaseline />
+        <Grid container justify="center">
+          <Grid item md={6} lg={4}>
+            <TodoForm onAddTodo={this.handleAddTodo} total={todos.length} />
+            <TodoList
+              todos={todos}
+              toggleDone={this.toggleDone}
+              onRemove={this.handleRemove}
+            />
+          </Grid>
+        </Grid>
       </Fragment>
     );
   }

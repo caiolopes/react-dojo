@@ -1,9 +1,25 @@
 import React, { Component } from 'react';
+import TextField from 'material-ui/TextField';
+import Button from 'material-ui/Button';
+import Typography from 'material-ui/Typography';
+import { withStyles } from 'material-ui/styles';
+
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  button: {
+    margin: theme.spacing.unit,
+  },
+  textfield: {
+    minWidth: 200,
+  },
+});
 
 class TodoForm extends Component {
   state = {
     newTodo: '',
-    error: ''
   }
 
   handleSubmit = (event) => {
@@ -11,8 +27,6 @@ class TodoForm extends Component {
     if (this.state.newTodo.length > 0) {
       this.props.onAddTodo(this.state.newTodo);
       this.setState({ error: '', newTodo: '' });
-    } else {
-      this.setState({ error: 'Write something!' });
     }
   };
 
@@ -22,14 +36,26 @@ class TodoForm extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <form onSubmit={this.handleSubmit}>
-        Add todo: <input type="text" value={this.state.newTodo} onChange={this.handleChange} />
-        <button>Add #{this.props.total + 1}</button>
-        <p style={{color: 'red'}}>{this.state.error}</p>
-      </form>
+      <div className={classes.root}>
+        <form onSubmit={this.handleSubmit}>
+          <TextField
+            required
+            id="new-todo"
+            className={classes.textfield}
+            placeholder="What are you up to?"
+            margin="normal"
+            value={this.state.newTodo}
+            onChange={this.handleChange}
+          />
+          <Button className={classes.button} type="submit" variant="raised" color="primary">Add #{this.props.total + 1}</Button>
+          <Typography variant="title" style={{color: 'red'}}>{this.state.error}</Typography>
+        </form>
+      </div>
     );
   }
 }
 
-export default TodoForm;
+export default withStyles(styles)(TodoForm);
