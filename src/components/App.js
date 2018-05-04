@@ -31,24 +31,23 @@ class App extends Component {
   toggleDone(id) {
     const { todos } = this.state;
 
-    api.editTodo(todos.find(todo => todo._id === id))
-      .then(editedTodo => {
-        this.setState((prevState, props) => {
-          return {
-            todos: prevState.todos.map(item => {
-              return item._id === editedTodo._id ? editedTodo : item;
-            }),
-          };
-        });
-      });
+    api.editTodo(todos.find(todo => todo._id === id));
+
+    this.setState((prevState, props) => {
+      return {
+        todos: prevState.todos.map(item => {
+          return item._id === id ? { ...item, completed: !item.completed } : item;
+        }),
+      };
+    });
   }
 
   handleRemove(id) {
-    api.removeTodo(id).then(todo => {
-      this.setState((prevState, props) => {
-        return { todos: prevState.todos.filter(item => item._id !== todo._id) };
-      });
-    })
+    api.removeTodo(id);
+
+    this.setState((prevState, props) => {
+      return { todos: prevState.todos.filter(item => item._id !== id) };
+    });
   }
 
   moveCard = (dragIndex, hoverIndex) => {

@@ -62,7 +62,7 @@
 			"color": null,
 			"created": 1521086585902,
 			"data": {
-				"url": "https://react-dojo-todo-api.herokuapp.com/v2"
+				"url": "https://react-dojo.herokuapp.com/v2"
 			},
 			"isPrivate": false,
 			"modified": 1522990437955,

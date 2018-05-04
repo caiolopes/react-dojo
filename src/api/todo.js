@@ -4,7 +4,7 @@ import axios from 'axios';
  * Version v1 without authentication
  */
 var api = axios.create({
-  baseURL: 'https://react-dojo-todo-api.herokuapp.com/v1/',
+  baseURL: 'https://react-dojo.herokuapp.com/v1/',
 });
 
 export async function getTodos() {
